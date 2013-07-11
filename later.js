@@ -650,7 +650,11 @@ later = function() {
           if (!end) break;
           updateNextStarts(dir, schedules, schedStarts, end);
         } else {
-          results.push(dir === "next" ? new Date(Math.max(startDate, next)) : getStart(schedules, schedStarts, next, endDate));
+          if (next < startDate) {
+            loopCount++; // ignore next in the past
+          } else {
+            results.push(dir === "next" ? new Date(next) : getStart(schedules, schedStarts, next, endDate));
+          }
           tickStarts(dir, schedules, schedStarts, next);
         }
         loopCount--;
